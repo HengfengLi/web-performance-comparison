@@ -1,0 +1,12 @@
+version: "2.1"
+services:
+  web:
+    container_name: openresty_web
+    build:
+      context: ./
+      dockerfile: ./nginx/Dockerfile
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx/conf.d:/usr/local/openresty/nginx/conf/conf.d
+      - ./nginx/lua:/usr/local/openresty/nginx/lua
