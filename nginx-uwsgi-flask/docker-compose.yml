@@ -1,0 +1,25 @@
+version: "3"
+services:
+  nginx:
+    container_name: my_nginx
+    image: nginx:1.13.3-alpine
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - tmp_dir:/tmp:ro
+    depends_on:
+      - uwsgi
+  uwsgi:
+    container_name: my_uwsgi
+    build:
+      context: ./
+      dockerfile: ./uwsgi/Dockerfile
+    command: uwsgi /uwsgi.ini --py-autoreload 3
+    volumes:
+      - ./:/usr/src/app
+      - ./uwsgi/uwsgi.ini:/uwsgi.ini
+      - tmp_dir:/tmp
+
+volumes:
+  tmp_dir:
